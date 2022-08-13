@@ -3,6 +3,7 @@ package ServerEndpoint
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"github.com/kxg3030/shermie-nat-traversal/Concrate"
 	"github.com/kxg3030/shermie-nat-traversal/Log"
 	"net"
@@ -38,6 +39,13 @@ func (i *Server) Run() {
 		Log.Log.Println("创建tcp服务失败：" + err.Error())
 		return
 	}
+	fmt.Print(`
+ ______     __  __     ______     ______     __    __     __     ______                   __   __     ______     ______  
+/\  ___\   /\ \_\ \   /\  ___\   /\  == \   /\ "-./  \   /\ \   /\  ___\                 /\ "-.\ \   /\  __ \   /\__  _\ 
+\ \___  \  \ \  __ \  \ \  __\   \ \  __<   \ \ \-./\ \  \ \ \  \ \  __\    ┌--------┐   \ \ \-.  \  \ \  __ \  \/_/\ \/ 
+ \/\_____\  \ \_\ \_\  \ \_____\  \ \_\ \_\  \ \_\ \ \_\  \ \_\  \ \_____\  └--------┘    \ \_\\"\_\  \ \_\ \_\    \ \_\ 
+  \/_____/   \/_/\/_/   \/_____/   \/_/ /_/   \/_/  \/_/   \/_/   \/_____/                 \/_/ \/_/   \/_/\/_/     \/_/
+`)
 	Log.Log.Println("服务监听地址：" + i.port)
 	for {
 		connect, err := listener.Accept()
