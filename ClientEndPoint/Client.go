@@ -79,5 +79,5 @@ func (i *Client) Run() {
 }
 
 func (i *Client) ConnectAuth() error {
-	return i.peer.WriteMessage([]byte("123456"), Concrate.ActionConnect, -1, -1)
+	return i.peer.WriteMessage([]byte(i.password), Concrate.ActionConnect, -1, -1)
 }

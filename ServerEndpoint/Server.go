@@ -69,7 +69,6 @@ func (i *Server) Handle(peer *ConnPeer) {
 	// 读取第一个字节
 	first, err := peer.readerWriter.Peek(1)
 	if err != nil {
-		Log.Log.Println("读取客户端数据错误-1：" + err.Error())
 		peer.Close()
 		return
 	}
@@ -89,7 +88,7 @@ func (i *Server) Handle(peer *ConnPeer) {
 			Log.Log.Println("读取客户端数据错误-2：" + err.Error())
 			return
 		}
-		Log.Log.Printf("服务器收到客户端消息：%s 客户端标识：%d 数据类型：%d 发送标识：%d", message.DataString(), message.UniqueId, message.Action, message.To)
+		Log.Log.Printf("服务器收到客户端消息：%s\n", message.DataString())
 		switch message.Action {
 		// 密码校验
 		case Concrate.ActionConnect:
@@ -97,8 +96,8 @@ func (i *Server) Handle(peer *ConnPeer) {
 				err := peer.WriteMessage([]byte("密码错误"), -1, -1)
 				if err != nil {
 					Log.Log.Println("服务器发送数据失败：" + err.Error())
-					return
 				}
+				return
 			}
 			// 每个内网客户端颁发独立id
 			atomic.AddUint32((*uint32)(unsafe.Pointer(&i.clientId)), 1)
@@ -128,8 +127,9 @@ func (i *Server) HandleBrowserRequest(peer *ConnPeer) {
 	var storagePeer *ConnPeer
 	atomic.AddUint32((*uint32)(unsafe.Pointer(&i.browserId)), 1)
 	bodyByte := make([]byte, peer.readerWriter.Reader.Buffered())
+	n, err := peer.readerWriter.Reader.Read(bodyByte)
+	bodyByte = bodyByte[:n]
 	Log.Log.Println("服务器收到浏览器消息：" + string(bodyByte))
-	_, err := peer.readerWriter.Reader.Read(bodyByte)
 	request, err := http.ReadRequest(bufio.NewReader(bytes.NewReader(bodyByte)))
 	if err != nil {
 		response = http.Response{
