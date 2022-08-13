@@ -16,13 +16,17 @@ type Client struct {
 	host     string
 	port     string
 	peer     *ConnPeer
+	password string
 	uniqueId int
+	bind     string
 }
 
-func NewClient(host, port string) *Client {
+func NewClient(host, port, password, bind string) *Client {
 	return &Client{
-		host: host,
-		port: port,
+		host:     host,
+		port:     port,
+		password: password,
+		bind:     bind,
 	}
 }
 
@@ -57,7 +61,7 @@ func (i *Client) Run() {
 		go func() {
 			Log.Log.Println("服务器返回数据：" + message.DataString())
 			var response http.Response
-			conn, err := net.DialTimeout("tcp", "47.100.10.87:80", time.Second*10)
+			conn, err := net.DialTimeout("tcp", i.bind, time.Second*10)
 			if err != nil {
 				Log.Log.Println("转发请求连接失败：" + err.Error())
 				response.StatusCode = http.StatusBadGateway
