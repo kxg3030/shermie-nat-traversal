@@ -5,7 +5,7 @@ Go语言实现的内网穿透工具，使用tcp协议代理请求
 
 - 服务器上执行
 ```go
-go run Server.go --pass=123456 --port=9090
+go run Server.go --pass=123456 --port=8888
 ```
 参数：
 
@@ -15,7 +15,7 @@ go run Server.go --pass=123456 --port=9090
 
 - 内网主机执行
 ```go
-go run Client.go --bind=127.0.0.1:80 --pass=123456 --port=9090 --host=111.111.111.111
+go run Client.go --bind=127.0.0.1:80 --pass=123456 --port=8888 --host=111.111.111.111
 ```
 参数：
 
@@ -28,6 +28,10 @@ go run Client.go --bind=127.0.0.1:80 --pass=123456 --port=9090 --host=111.111.11
 --host：公网服务器的外网host
 
 - 配置nginx
+> 使用nginx将公网地址请求转发到穿透服务的端口
 ```go
-使用nginx将公网地址映射到监听的端口
+# 内网穿透
+location /nat {
+    proxy_pass http://127.0.0.1:8888;		
+}
 ```

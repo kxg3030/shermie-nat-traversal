@@ -12,7 +12,7 @@ func init() {
 
 func main() {
 	host := flag.String("host", "127.0.0.1", "server host")
-	port := flag.String("port", "9090", "listen port")
+	port := flag.String("port", "8888", "listen port")
 	pass := flag.String("pass", "123456", "auth password")
 	bind := flag.String("bind", "127.0.0.1:80", "your local server host and port")
 	flag.Parse()
